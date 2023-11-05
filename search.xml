@@ -8,4 +8,320 @@
 <h1 id="blog主要分享内容"><a href="#blog主要分享内容" class="headerlink" title="blog主要分享内容"></a>blog主要分享内容</h1><p>linux 的一些小问题</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>linux下ProxyChains+clash加速下载工具配置教程</title>
+    <url>/2023/11/05/linux%E4%B8%8BProxyChains+%E7%BD%91%E7%BB%9C%E4%BB%A3%E7%90%86%E5%B7%A5%E5%85%B7%E5%8A%A0%E9%80%9F%E4%B8%8B%E8%BD%BD%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p>为了在 Linux 中使用命令行代理，本文介绍如何安装并配置 ProxyChains 本地代理。</p>
+<p>ProxyChains 在 GitHub 上开源，项目地址：<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a>。</p>
+<p>配置成功后，只需要在需要走代理的命令前加上 proxychains 即可，例如：</p>
+<pre><code>proxychains curl www.google.com
+proxychains git clone git@github.com:gukaifeng/hexo.git
+</code></pre>
+<p>或者<code>proxychains bash</code>打开一个全局代理的终端</p>
+<h1 id="1-安装并配置ProxyChains"><a href="#1-安装并配置ProxyChains" class="headerlink" title="1.安装并配置ProxyChains"></a>1.安装并配置ProxyChains</h1><h2 id="对于使用apt包管理器的发行版"><a href="#对于使用apt包管理器的发行版" class="headerlink" title="对于使用apt包管理器的发行版"></a>对于使用apt包管理器的发行版</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><p>直接使用<code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; sudo apt install proxychains</code>安装，</p>
+<h3 id="2-编辑配置文件"><a href="#2-编辑配置文件" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
+
+2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
+
+3.$(HOME)/.proxychains/proxychains.conf。
+
+4.$(sysconfdir)/proxychains.conf，通常是 /etc/proxychains.conf。
+</code></pre>
+<p>可以看出来，优先级越低的是越通用的。</p>
+<p>我这里选择编辑 <code>/etc/proxychains.conf</code>，这样用起来比较方便，并且每个用户都能用。</p>
+<p>使用vim来配置<code>proxychains.conf</code><br><code>vim /etc/proxychains.conf</code></p>
+<p>其默认内容如下：</p>
+<pre><code class="#">#
+#        HTTP, SOCKS4, SOCKS5 tunneling proxifier with DNS.
+#	
+
+# The option below identifies how the ProxyList is treated.
+# only one option should be uncommented at time,
+# otherwise the last appearing option will be accepted
+#
+#dynamic_chain
+#
+# Dynamic - Each connection will be done via chained proxies
+# all proxies chained in the order as they appear in the list
+# at least one proxy must be online to play in chain
+# (dead proxies are skipped)
+# otherwise EINTR is returned to the app
+#
+strict_chain
+#
+# Strict - Each connection will be done via chained proxies
+# all proxies chained in the order as they appear in the list
+# all proxies must be online to play in chain
+# otherwise EINTR is returned to the app
+#
+#random_chain
+#
+# Random - Each connection will be done via random proxy
+# (or proxy chain, see  chain_len) from the list.
+# this option is good to test your IDS :)
+
+# Make sense only if random_chain
+#chain_len = 2
+
+# Quiet mode (no output from library)
+#quiet_mode
+
+# Proxy DNS requests - no leak for DNS data
+proxy_dns 
+
+# Some timeouts in milliseconds
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+# ProxyList format
+#       type  host  port [user pass]
+#       (values separated by &#39;tab&#39; or &#39;blank&#39;)
+#
+#
+#        Examples:
+#
+#            	socks5	192.168.67.78	1080	lamer	secret
+#		http	192.168.89.3	8080	justu	hidden
+#	 	socks4	192.168.1.49	1080
+#	        http	192.168.39.93	8080	
+#		
+#
+#       proxy types: http, socks4, socks5
+#        ( auth types supported: &quot;basic&quot;-http  &quot;user/pass&quot;-socks )
+#
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to &quot;tor&quot;
+socks4 	127.0.0.1 9050
+</code></pre>
+<p>这里面需要我们改的其实只有最后的 <code>[ProxyList]</code> 字段（其他字段如有需求请自行了解）。在这个字段上面的注释中给出了该字段下每行的书写格式：</p>
+<pre><code>type  ip  port [user pass]
+</code></pre>
+<p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
+<p>在这里配置好你的本地代理信息就可以了。</p>
+<p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
+<h2 id="对于其他发行版"><a href="#对于其他发行版" class="headerlink" title="对于其他发行版"></a>对于其他发行版</h2><h3 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h3><p>首先克隆项目到本地，并进入目录：</p>
+<pre><code>git clone https://github.com/rofl0r/proxychains-ng.git
+cd proxychains-ng
+</code></pre>
+<p>配置：</p>
+<pre><code>./configure --prefix=/usr --sysconfdir=/etc
+</code></pre>
+<p>编译安装（需要系统内有 C 编译器，最好是 gcc）：</p>
+<pre><code>make
+sudo make install
+</code></pre>
+<p>安装完成后，在命令行输入 proxychains4 （应当已经可以自动补全了）可以看到以下内容：</p>
+<pre><code>$ proxychains4
+
+Usage:	proxychains4 -q -f config_file program_name [arguments]
+    -q makes proxychains quiet - this overrides the config setting
+    -f allows one to manually specify a configfile to use
+    for example : proxychains telnet somehost.com
+More help in README file
+</code></pre>
+<p>到这里就安装成功了。</p>
+<h3 id="2-编辑配置文件-1"><a href="#2-编辑配置文件-1" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
+
+2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
+
+3.$(HOME)/.proxychains/proxychains.conf。
+
+4.$(sysconfdir)/proxychains.conf，通常是 /etc/proxychains.conf。
+</code></pre>
+<p>可以看出来，优先级越低的是越通用的。</p>
+<p>我这里选择编辑 <code>/etc/proxychains.conf</code>，这样用起来比较方便，并且每个用户都能用。</p>
+<p>在我们克隆的仓库里的<code>src</code>目录中，有一个配置文件模板，我们将其拷贝一份到<code>/etc</code>下，并打开编辑：</p>
+<p>创建并编辑 <code>/etc/proxychains.conf</code>：</p>
+<pre><code>sudo cp ./src/proxychains.conf /etc/
+vim /etc/proxychains.conf
+</code></pre>
+<p>其默认内容如下：</p>
+<pre><code># proxychains.conf  VER 4.x
+#
+#        HTTP, SOCKS4a, SOCKS5 tunneling proxifier with DNS.
+
+
+# The option below identifies how the ProxyList is treated.
+# only one option should be uncommented at time,
+# otherwise the last appearing option will be accepted
+#
+#dynamic_chain
+#
+# Dynamic - Each connection will be done via chained proxies
+# all proxies chained in the order as they appear in the list
+# at least one proxy must be online to play in chain
+# (dead proxies are skipped)
+# otherwise EINTR is returned to the app
+#
+strict_chain
+#
+# Strict - Each connection will be done via chained proxies
+# all proxies chained in the order as they appear in the list
+# all proxies must be online to play in chain
+# otherwise EINTR is returned to the app
+#
+#round_robin_chain
+#
+# Round Robin - Each connection will be done via chained proxies
+# of chain_len length
+# all proxies chained in the order as they appear in the list
+# at least one proxy must be online to play in chain
+# (dead proxies are skipped).
+# the start of the current proxy chain is the proxy after the last
+# proxy in the previously invoked proxy chain.
+# if the end of the proxy chain is reached while looking for proxies
+# start at the beginning again.
+# otherwise EINTR is returned to the app
+# These semantics are not guaranteed in a multithreaded environment.
+#
+#random_chain
+#
+# Random - Each connection will be done via random proxy
+# (or proxy chain, see  chain_len) from the list.
+# this option is good to test your IDS :)
+
+# Make sense only if random_chain or round_robin_chain
+#chain_len = 2
+
+# Quiet mode (no output from library)
+#quiet_mode
+
+## Proxy DNS requests - no leak for DNS data
+# (disable all of the 3 items below to not proxy your DNS requests)
+
+# method 1. this uses the proxychains4 style method to do remote dns:
+# a thread is spawned that serves DNS requests and hands down an ip
+# assigned from an internal list (via remote_dns_subnet).
+# this is the easiest (setup-wise) and fastest method, however on
+# systems with buggy libcs and very complex software like webbrowsers
+# this might not work and/or cause crashes.
+proxy_dns
+
+# method 2. use the old proxyresolv script to proxy DNS requests
+# in proxychains 3.1 style. requires `proxyresolv` in $PATH
+# plus a dynamically linked `dig` binary.
+# this is a lot slower than `proxy_dns`, doesn&#39;t support .onion URLs,
+# but might be more compatible with complex software like webbrowsers.
+#proxy_dns_old
+
+# method 3. use proxychains4-daemon process to serve remote DNS requests.
+# this is similar to the threaded `proxy_dns` method, however it requires
+# that proxychains4-daemon is already running on the specified address.
+# on the plus side it doesn&#39;t do malloc/threads so it should be quite
+# compatible with complex, async-unsafe software.
+# note that if you don&#39;t start proxychains4-daemon before using this,
+# the process will simply hang.
+#proxy_dns_daemon 127.0.0.1:1053
+
+# set the class A subnet number to use for the internal remote DNS mapping
+# we use the reserved 224.x.x.x range by default,
+# if the proxified app does a DNS request, we will return an IP from that range.
+# on further accesses to this ip we will send the saved DNS name to the proxy.
+# in case some control-freak app checks the returned ip, and denies to 
+# connect, you can use another subnet, e.g. 10.x.x.x or 127.x.x.x.
+# of course you should make sure that the proxified app does not need
+# *real* access to this subnet. 
+# i.e. dont use the same subnet then in the localnet section
+#remote_dns_subnet 127 
+#remote_dns_subnet 10
+remote_dns_subnet 224
+
+# Some timeouts in milliseconds
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+### Examples for localnet exclusion
+## localnet ranges will *not* use a proxy to connect.
+## note that localnet works only when plain IP addresses are passed to the app,
+## the hostname resolves via /etc/hosts, or proxy_dns is disabled or proxy_dns_old used.
+
+## Exclude connections to 192.168.1.0/24 with port 80
+# localnet 192.168.1.0:80/255.255.255.0
+
+## Exclude connections to 192.168.100.0/24
+# localnet 192.168.100.0/255.255.255.0
+
+## Exclude connections to ANYwhere with port 80
+# localnet 0.0.0.0:80/0.0.0.0
+# localnet [::]:80/0
+
+## RFC6890 Loopback address range
+## if you enable this, you have to make sure remote_dns_subnet is not 127
+## you&#39;ll need to enable it if you want to use an application that 
+## connects to localhost.
+# localnet 127.0.0.0/255.0.0.0
+# localnet ::1/128
+
+## RFC1918 Private Address Ranges
+# localnet 10.0.0.0/255.0.0.0
+# localnet 172.16.0.0/255.240.0.0
+# localnet 192.168.0.0/255.255.0.0
+
+### Examples for dnat
+## Trying to proxy connections to destinations which are dnatted,
+## will result in proxying connections to the new given destinations.
+## Whenever I connect to 1.1.1.1 on port 1234 actually connect to 1.1.1.2 on port 443
+# dnat 1.1.1.1:1234  1.1.1.2:443
+
+## Whenever I connect to 1.1.1.1 on port 443 actually connect to 1.1.1.2 on port 443
+## (no need to write :443 again)
+# dnat 1.1.1.2:443  1.1.1.2
+
+## No matter what port I connect to on 1.1.1.1 port actually connect to 1.1.1.2 on port 443
+# dnat 1.1.1.1  1.1.1.2:443
+
+## Always, instead of connecting to 1.1.1.1, connect to 1.1.1.2
+# dnat 1.1.1.1  1.1.1.2
+
+# ProxyList format
+#       type  ip  port [user pass]
+#       (values separated by &#39;tab&#39; or &#39;blank&#39;)
+#
+#       only numeric ipv4 addresses are valid
+#
+#
+#        Examples:
+#
+#            	socks5	192.168.67.78	1080	lamer	secret
+#		http	192.168.89.3	8080	justu	hidden
+#	 	socks4	192.168.1.49	1080
+#	        http	192.168.39.93	8080	
+#		
+#
+#       proxy types: http, socks4, socks5, raw
+#         * raw: The traffic is simply forwarded to the proxy without modification.
+#        ( auth types supported: &quot;basic&quot;-http  &quot;user/pass&quot;-socks )
+#
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to &quot;tor&quot;
+socks4 	127.0.0.1 9050
+</code></pre>
+<p>这里面需要我们改的其实只有最后的 <code>[ProxyList]</code> 字段（其他字段如有需求请自行了解）。在这个字段上面的注释中给出了该字段下每行的书写格式：</p>
+<pre><code>type  ip  port [user pass]
+</code></pre>
+<p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
+<p>在这里配置好你的本地代理信息就可以了。</p>
+<p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
+<h3 id="2-安装并配置clash"><a href="#2-安装并配置clash" class="headerlink" title="2.安装并配置clash"></a>2.安装并配置clash</h3><p><strong>由于目前clash疑似被删库</strong><br>所以暂时只给编译方法</p>
+<pre><code>sudo su
+
+tar -zxvf Clash.for.Windows-0.20.15-x64-linux.tar.gz
+
+mv &#39;Clash for Windows-0.20.15-x64-linux&#39;/ clash
+
+cd clash/
+
+su 自己的用户名
+
+./cfw
+</code></pre>
+<h1 id="温馨提示"><a href="#温馨提示" class="headerlink" title="温馨提示"></a>温馨提示</h1><p>使用proxychain时使用apt包管理器时不要使用<code>proxychain bash</code>否则很可能不会经过代理</p>
+]]></content>
+  </entry>
 </search>
