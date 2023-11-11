@@ -28,7 +28,7 @@
 <meta property="og:description" content="为了在 Linux 中使用命令行代理，本文介绍如何安装并配置 ProxyChains 本地代理。 ProxyChains 在 GitHub 上开源，项目地址：proxychains-ng。 配置成功后，只需要在需要走代理的命令前加上 proxychains 即可，例如： proxychains curl www.google.com proxychains git clone git@github">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-11-05T02:40:16.000Z">
-<meta property="article:modified_time" content="2023-11-05T03:48:35.793Z">
+<meta property="article:modified_time" content="2023-11-11T08:15:22.838Z">
 <meta property="article:author" content="叶">
 <meta name="twitter:card" content="summary">
 
@@ -200,10 +200,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-11-05 10:40:16 / 修改时间：11:48:35" itemprop="dateCreated datePublished" datetime="2023-11-05T10:40:16+08:00">2023-11-05</time>
+              <time title="创建时间：2023-11-05 10:40:16" itemprop="dateCreated datePublished" datetime="2023-11-05T10:40:16+08:00">2023-11-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-11-11 16:15:22" itemprop="dateModified" datetime="2023-11-11T16:15:22+08:00">2023-11-11</time>
+              </span>
 
           
 
@@ -223,8 +229,8 @@
 proxychains git clone git@github.com:gukaifeng/hexo.git
 </code></pre>
 <p>或者<code>proxychains bash</code>打开一个全局代理的终端</p>
-<h1 id="1-安装并配置ProxyChains"><a href="#1-安装并配置ProxyChains" class="headerlink" title="1.安装并配置ProxyChains"></a>1.安装并配置ProxyChains</h1><h2 id="对于使用apt包管理器的发行版"><a href="#对于使用apt包管理器的发行版" class="headerlink" title="对于使用apt包管理器的发行版"></a>对于使用apt包管理器的发行版</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><p>直接使用<code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; sudo apt install proxychains</code>安装，</p>
-<h3 id="2-编辑配置文件"><a href="#2-编辑配置文件" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<h1 id="安装并配置ProxyChains"><a href="#安装并配置ProxyChains" class="headerlink" title="安装并配置ProxyChains"></a>安装并配置ProxyChains</h1><h2 id="对于使用apt包管理器的发行版"><a href="#对于使用apt包管理器的发行版" class="headerlink" title="对于使用apt包管理器的发行版"></a>对于使用apt包管理器的发行版</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>直接使用<code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; sudo apt install proxychains</code>安装，</p>
+<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
 <pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
 
 2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
@@ -307,7 +313,7 @@ socks4 	127.0.0.1 9050
 <p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
 <p>在这里配置好你的本地代理信息就可以了。</p>
 <p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
-<h2 id="对于其他发行版"><a href="#对于其他发行版" class="headerlink" title="对于其他发行版"></a>对于其他发行版</h2><h3 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h3><p>首先克隆项目到本地，并进入目录：</p>
+<h2 id="对于其他发行版"><a href="#对于其他发行版" class="headerlink" title="对于其他发行版"></a>对于其他发行版</h2><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><p>首先克隆项目到本地，并进入目录：</p>
 <pre><code>git clone https://github.com/rofl0r/proxychains-ng.git
 cd proxychains-ng
 </code></pre>
@@ -328,7 +334,7 @@ Usage:	proxychains4 -q -f config_file program_name [arguments]
 More help in README file
 </code></pre>
 <p>到这里就安装成功了。</p>
-<h3 id="2-编辑配置文件-1"><a href="#2-编辑配置文件-1" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<h3 id="编辑配置文件-1"><a href="#编辑配置文件-1" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
 <pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
 
 2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
@@ -513,7 +519,7 @@ socks4 	127.0.0.1 9050
 <p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
 <p>在这里配置好你的本地代理信息就可以了。</p>
 <p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
-<h3 id="2-安装并配置clash"><a href="#2-安装并配置clash" class="headerlink" title="2.安装并配置clash"></a>2.安装并配置clash</h3><p><strong>由于目前clash疑似被删库</strong><br>所以暂时只给编译方法</p>
+<h1 id="安装并配置clash"><a href="#安装并配置clash" class="headerlink" title="安装并配置clash"></a>安装并配置clash</h1><p><strong>由于目前clash疑似被删库</strong><br>所以暂时只给编译方法</p>
 <pre><code>sudo su
 
 tar -zxvf Clash.for.Windows-0.20.15-x64-linux.tar.gz
@@ -562,7 +568,10 @@ su 自己的用户名
     <a href="/2023/10/29/Hello-world/" rel="prev" title="Hello world">
       <i class="fa fa-chevron-left"></i> Hello world
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/" rel="next" title="linux+kde下jetbrains安装并配置菜单图标">
+      linux+kde下jetbrains安装并配置菜单图标 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -621,7 +630,7 @@ su 自己的用户名
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEProxyChains"><span class="nav-number">1.</span> <span class="nav-text">1.安装并配置ProxyChains</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E4%BD%BF%E7%94%A8apt%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-number">1.1.</span> <span class="nav-text">对于使用apt包管理器的发行版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 编辑配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%85%B6%E4%BB%96%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-number">1.2.</span> <span class="nav-text">对于其他发行版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 编辑配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEclash"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.安装并配置clash</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%A9%E9%A6%A8%E6%8F%90%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">温馨提示</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEProxyChains"><span class="nav-number">1.</span> <span class="nav-text">安装并配置ProxyChains</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E4%BD%BF%E7%94%A8apt%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-number">1.1.</span> <span class="nav-text">对于使用apt包管理器的发行版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">编辑配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%85%B6%E4%BB%96%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-number">1.2.</span> <span class="nav-text">对于其他发行版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">编辑配置文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEclash"><span class="nav-number">2.</span> <span class="nav-text">安装并配置clash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%A9%E9%A6%A8%E6%8F%90%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">温馨提示</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -635,7 +644,7 @@ su 自己的用户名
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

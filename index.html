@@ -175,6 +175,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://connor-y-s.github.io/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="叶">
+      <meta itemprop="description" content="学习ing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="叶のblog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/" class="post-title-link" itemprop="url">linux+kde下jetbrains安装并配置菜单图标</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-11-11 15:14:02 / 修改时间：16:15:42" itemprop="dateCreated datePublished" datetime="2023-11-11T15:14:02+08:00">2023-11-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>为了在linux上使用jetbrains系列开发工具，本文介绍如何在linux下安装jetbrains系列工具</p>
+<p>作者系统及kde配置</p>
+<pre><code>Operating System: Debian GNU/Linux 12
+KDE Plasma Version: 5.27.5
+KDE Frameworks Version: 5.103.0
+Qt Version: 5.15.8
+Kernel Version: 6.1.0-13-amd64 (64-bit)
+</code></pre>
+<h1 id="在官网下载-tar-gz文件"><a href="#在官网下载-tar-gz文件" class="headerlink" title="在官网下载.tar.gz文件"></a>在官网下载.tar.gz文件</h1><p>jetbrains系列工具官网地址为<a target="_blank" rel="noopener" href="https://www.jetbrains.com.cn/">https://www.jetbrains.com.cn/</a><br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_152330.png"><br>点击开发者工具<br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_152808.png"><br>选择工具并下载（这里以CLion为例）<br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_153027.png"><br>点击下载<br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_153100.png"></p>
+<h1 id="解压-tar-gz文件"><a href="#解压-tar-gz文件" class="headerlink" title="解压.tar.gz文件"></a>解压.tar.gz文件</h1><pre><code>cd 文件所在目录
+sudo tar -xvzf 文件名.tar.gz -C 目标目录
+</code></pre>
+<p><strong>温馨提示</strong>：命令可能有误</p>
+<h1 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h1><pre><code>目标目录/文件名/bin/软件名.sh
+</code></pre>
+<p><strong>温馨提示</strong>：命令可能有误</p>
+<h1 id="添加图标"><a href="#添加图标" class="headerlink" title="添加图标"></a>添加图标</h1><p>打开<strong>KDE菜单编辑器</strong><br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155117.png"><br>点击新建项目，并输入名称<br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155252.png"><br>这里仅需输入<code>名称</code>和<code>程序</code><br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155456.png"><br>保存后就可以看到图标</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://connor-y-s.github.io/2023/11/05/linux%E4%B8%8BProxyChains+%E7%BD%91%E7%BB%9C%E4%BB%A3%E7%90%86%E5%B7%A5%E5%85%B7%E5%8A%A0%E9%80%9F%E4%B8%8B%E8%BD%BD%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -198,10 +273,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-11-05 10:40:16 / 修改时间：11:48:35" itemprop="dateCreated datePublished" datetime="2023-11-05T10:40:16+08:00">2023-11-05</time>
+              <time title="创建时间：2023-11-05 10:40:16" itemprop="dateCreated datePublished" datetime="2023-11-05T10:40:16+08:00">2023-11-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-11-11 16:15:22" itemprop="dateModified" datetime="2023-11-11T16:15:22+08:00">2023-11-11</time>
+              </span>
 
           
 
@@ -221,8 +302,8 @@
 proxychains git clone git@github.com:gukaifeng/hexo.git
 </code></pre>
 <p>或者<code>proxychains bash</code>打开一个全局代理的终端</p>
-<h1 id="1-安装并配置ProxyChains"><a href="#1-安装并配置ProxyChains" class="headerlink" title="1.安装并配置ProxyChains"></a>1.安装并配置ProxyChains</h1><h2 id="对于使用apt包管理器的发行版"><a href="#对于使用apt包管理器的发行版" class="headerlink" title="对于使用apt包管理器的发行版"></a>对于使用apt包管理器的发行版</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><p>直接使用<code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; sudo apt install proxychains</code>安装，</p>
-<h3 id="2-编辑配置文件"><a href="#2-编辑配置文件" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<h1 id="安装并配置ProxyChains"><a href="#安装并配置ProxyChains" class="headerlink" title="安装并配置ProxyChains"></a>安装并配置ProxyChains</h1><h2 id="对于使用apt包管理器的发行版"><a href="#对于使用apt包管理器的发行版" class="headerlink" title="对于使用apt包管理器的发行版"></a>对于使用apt包管理器的发行版</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>直接使用<code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; sudo apt install proxychains</code>安装，</p>
+<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
 <pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
 
 2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
@@ -305,7 +386,7 @@ socks4 	127.0.0.1 9050
 <p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
 <p>在这里配置好你的本地代理信息就可以了。</p>
 <p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
-<h2 id="对于其他发行版"><a href="#对于其他发行版" class="headerlink" title="对于其他发行版"></a>对于其他发行版</h2><h3 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h3><p>首先克隆项目到本地，并进入目录：</p>
+<h2 id="对于其他发行版"><a href="#对于其他发行版" class="headerlink" title="对于其他发行版"></a>对于其他发行版</h2><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><p>首先克隆项目到本地，并进入目录：</p>
 <pre><code>git clone https://github.com/rofl0r/proxychains-ng.git
 cd proxychains-ng
 </code></pre>
@@ -326,7 +407,7 @@ Usage:	proxychains4 -q -f config_file program_name [arguments]
 More help in README file
 </code></pre>
 <p>到这里就安装成功了。</p>
-<h3 id="2-编辑配置文件-1"><a href="#2-编辑配置文件-1" class="headerlink" title="2. 编辑配置文件"></a>2. 编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
+<h3 id="编辑配置文件-1"><a href="#编辑配置文件-1" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>ProxyChains 会按以下顺序以此寻找配置文件，即下列配置文件优先级由高到低：</p>
 <pre><code>1.由环境变量 PROXYCHAINS_CONF_FILE 指定的配置文件 或 执行 proxychains4 命令时由 -f 参数指定的配置文件。
 
 2../proxychains.conf，即运行命令 proxychains4 时所在目录下的 proxychains.conf（如果有的话）。
@@ -511,7 +592,7 @@ socks4 	127.0.0.1 9050
 <p><code>type</code> 即协议，proxychains 支持 <code>http, socks4, socks5, raw</code>；<br>然后是地址 <code>ip</code> 和端口 <code>port</code>，以及可选的用户名 <code>user</code> 和密码 <code>pass</code>。</p>
 <p>在这里配置好你的本地代理信息就可以了。</p>
 <p><strong>提醒</strong>：ProxyChains 只是本地代理，所以你还需要一个网络代理工具（比如 clash）。</p>
-<h3 id="2-安装并配置clash"><a href="#2-安装并配置clash" class="headerlink" title="2.安装并配置clash"></a>2.安装并配置clash</h3><p><strong>由于目前clash疑似被删库</strong><br>所以暂时只给编译方法</p>
+<h1 id="安装并配置clash"><a href="#安装并配置clash" class="headerlink" title="安装并配置clash"></a>安装并配置clash</h1><p><strong>由于目前clash疑似被删库</strong><br>所以暂时只给编译方法</p>
 <pre><code>sudo su
 
 tar -zxvf Clash.for.Windows-0.20.15-x64-linux.tar.gz
@@ -667,7 +748,7 @@ su 自己的用户名
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
