@@ -4,7 +4,8 @@
     <title>Hello world</title>
     <url>/2023/10/29/Hello-world/</url>
     <content><![CDATA[<h1 id="hello"><a href="#hello" class="headerlink" title="hello"></a>hello</h1><p>部署github-pages差不多一个多月了，找了很多还是决定用hexo+next的方式部署blog</p>
-<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><p>我属于一个纯白嫖党（不出钱，不登号，拿了还不点stars）<br>目前代码水平能看懂，写不了太高深的（实际就是看了两天书而已）<br>主攻：c</p>
+<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><p>我属于一个纯白嫖党（不出钱，不登号，拿了还不点stars）<br>目前代码水平能看懂，写不了太高深的（实际就是看了两天书而已）</p>
+<p>主攻：c</p>
 <h1 id="blog主要分享内容"><a href="#blog主要分享内容" class="headerlink" title="blog主要分享内容"></a>blog主要分享内容</h1><p>linux 的一些小问题</p>
 ]]></content>
   </entry>
@@ -29,6 +30,9 @@ sudo tar -xvzf 文件名.tar.gz -C 目标目录
 <p><strong>温馨提示</strong>：命令可能有误</p>
 <h1 id="添加图标"><a href="#添加图标" class="headerlink" title="添加图标"></a>添加图标</h1><p>打开<strong>KDE菜单编辑器</strong><br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155117.png"><br>点击新建项目，并输入名称<br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155252.png"><br>这里仅需输入<code>名称</code>和<code>程序</code><br><img src="/2023/11/11/linux-kde%E4%B8%8Bjetbrains%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%8F%9C%E5%8D%95%E5%9B%BE%E6%A0%87/Screenshot_20231111_155456.png"><br>保存后就可以看到图标</p>
 ]]></content>
+      <tags>
+        <tag>linux小知识</tag>
+      </tags>
   </entry>
   <entry>
     <title>linux下ProxyChains+clash加速下载工具配置教程</title>
@@ -344,6 +348,91 @@ su 自己的用户名
 ./cfw
 </code></pre>
 <h1 id="温馨提示"><a href="#温馨提示" class="headerlink" title="温馨提示"></a>温馨提示</h1><p>使用proxychain时使用apt包管理器时不要使用<code>proxychain bash</code>否则很可能不会经过代理</p>
+]]></content>
+      <tags>
+        <tag>linux小知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小工具源码分享</title>
+    <url>/2023/11/24/%E5%B0%8F%E5%B7%A5%E5%85%B7%E6%BA%90%E7%A0%81%E5%88%86%E4%BA%AB/</url>
+    <content><![CDATA[<p>11位带有*号的数字还原纯数字，个人编程水平较低，望理解</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;style&gt;
+    #result &#123;
+      margin-top: 10px;
+      font-weight: bold;
+    &#125;
+
+    #copyButton &#123;
+      margin-top: 10px;
+    &#125;
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;输入&lt;/h2&gt;
+  &lt;label for=&quot;countInput&quot;&gt;请输入数字的个数：&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;countInput&quot;&gt;
+  &lt;br&gt;
+  &lt;label for=&quot;numbersInput&quot;&gt;请输入11位*加数字的组合（用逗号分隔）：&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;numbersInput&quot;&gt;
+  &lt;br&gt;
+  &lt;button onclick=&quot;generateNumbers()&quot;&gt;生成&lt;/button&gt;
+
+  &lt;h2&gt;输出&lt;/h2&gt;
+  &lt;div id=&quot;result&quot;&gt;&lt;/div&gt;
+  &lt;button id=&quot;copyButton&quot; onclick=&quot;copyResult()&quot;&gt;复制结果&lt;/button&gt;
+
+  &lt;script&gt;
+    function generateNumbers() &#123;
+      var count = parseInt(document.getElementById(&#39;countInput&#39;).value);
+      var numbersInput = document.getElementById(&#39;numbersInput&#39;).value;
+      var numbers = numbersInput.split(&#39;,&#39;);
+
+      var result = [];
+
+      // 遍历每个11位数字组合
+      for (var i = 0; i &lt; numbers.length; i++) &#123;
+        var number = numbers[i];
+        var asteriskIndex = number.indexOf(&#39;*&#39;);
+        var newNumberPrefix = number.slice(0, asteriskIndex);
+        var newNumberSuffix = number.slice(asteriskIndex + 1);
+
+        // 将*的位置替换成0到9的数字
+        for (var j = 0; j &lt; 10; j++) &#123;
+          var newNumber = newNumberPrefix + j + newNumberSuffix;
+          result.push(newNumber);
+        &#125;
+      &#125;
+
+      // 显示结果
+      var resultDiv = document.getElementById(&#39;result&#39;);
+      resultDiv.innerHTML = result.join(&#39;&lt;br&gt;&#39;);
+
+      // 显示复制按钮
+      var copyButton = document.getElementById(&#39;copyButton&#39;);
+      copyButton.style.display = &#39;block&#39;;
+    &#125;
+
+    function copyResult() &#123;
+      var resultDiv = document.getElementById(&#39;result&#39;);
+      var range = document.createRange();
+      range.selectNodeContents(resultDiv);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand(&#39;copy&#39;);
+      window.getSelection().removeAllRanges();
+
+      alert(&#39;结果已复制到剪贴板！&#39;);
+    &#125;
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>这段代码一下只能消除一个*号</strong></p>
 ]]></content>
   </entry>
 </search>
